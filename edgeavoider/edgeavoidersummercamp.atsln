@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "edgeavoidersummercamp", "edgeavoidersummercamp\edgeavoidersummercamp.cproj", "{D6D1644D-07BA-4EF7-88C4-8A097C6D442D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6D1644D-07BA-4EF7-88C4-8A097C6D442D}.Debug|AVR.ActiveCfg = Debug|AVR
+		{D6D1644D-07BA-4EF7-88C4-8A097C6D442D}.Debug|AVR.Build.0 = Debug|AVR
+		{D6D1644D-07BA-4EF7-88C4-8A097C6D442D}.Release|AVR.ActiveCfg = Release|AVR
+		{D6D1644D-07BA-4EF7-88C4-8A097C6D442D}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

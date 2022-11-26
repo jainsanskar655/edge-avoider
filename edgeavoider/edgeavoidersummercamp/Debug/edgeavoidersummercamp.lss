@@ -1,0 +1,156 @@
+
+edgeavoidersummercamp.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000080  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00000080  000000f4  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .comment      00000030  00000000  00000000  000000f4  2**0
+                  CONTENTS, READONLY
+  3 .debug_aranges 00000020  00000000  00000000  00000124  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_info   000000a6  00000000  00000000  00000144  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_abbrev 00000062  00000000  00000000  000001ea  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_line   000000e1  00000000  00000000  0000024c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_frame  00000024  00000000  00000000  00000330  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_str    0000016b  00000000  00000000  00000354  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_loc    00000048  00000000  00000000  000004bf  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_ranges 00000010  00000000  00000000  00000507  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	12 c0       	rjmp	.+36     	; 0x26 <__ctors_end>
+   2:	19 c0       	rjmp	.+50     	; 0x36 <__bad_interrupt>
+   4:	18 c0       	rjmp	.+48     	; 0x36 <__bad_interrupt>
+   6:	17 c0       	rjmp	.+46     	; 0x36 <__bad_interrupt>
+   8:	16 c0       	rjmp	.+44     	; 0x36 <__bad_interrupt>
+   a:	15 c0       	rjmp	.+42     	; 0x36 <__bad_interrupt>
+   c:	14 c0       	rjmp	.+40     	; 0x36 <__bad_interrupt>
+   e:	13 c0       	rjmp	.+38     	; 0x36 <__bad_interrupt>
+  10:	12 c0       	rjmp	.+36     	; 0x36 <__bad_interrupt>
+  12:	11 c0       	rjmp	.+34     	; 0x36 <__bad_interrupt>
+  14:	10 c0       	rjmp	.+32     	; 0x36 <__bad_interrupt>
+  16:	0f c0       	rjmp	.+30     	; 0x36 <__bad_interrupt>
+  18:	0e c0       	rjmp	.+28     	; 0x36 <__bad_interrupt>
+  1a:	0d c0       	rjmp	.+26     	; 0x36 <__bad_interrupt>
+  1c:	0c c0       	rjmp	.+24     	; 0x36 <__bad_interrupt>
+  1e:	0b c0       	rjmp	.+22     	; 0x36 <__bad_interrupt>
+  20:	0a c0       	rjmp	.+20     	; 0x36 <__bad_interrupt>
+  22:	09 c0       	rjmp	.+18     	; 0x36 <__bad_interrupt>
+  24:	08 c0       	rjmp	.+16     	; 0x36 <__bad_interrupt>
+
+00000026 <__ctors_end>:
+  26:	11 24       	eor	r1, r1
+  28:	1f be       	out	0x3f, r1	; 63
+  2a:	cf e5       	ldi	r28, 0x5F	; 95
+  2c:	d4 e0       	ldi	r29, 0x04	; 4
+  2e:	de bf       	out	0x3e, r29	; 62
+  30:	cd bf       	out	0x3d, r28	; 61
+  32:	02 d0       	rcall	.+4      	; 0x38 <main>
+  34:	23 c0       	rjmp	.+70     	; 0x7c <_exit>
+
+00000036 <__bad_interrupt>:
+  36:	e4 cf       	rjmp	.-56     	; 0x0 <__vectors>
+
+00000038 <main>:
+//connect the left sensor on PC3 and right one on PC0.
+
+
+int main(void)
+{
+	DDRB=0b11111111; //PORTB as output Port connected to motors
+  38:	2f ef       	ldi	r18, 0xFF	; 255
+  3a:	27 bb       	out	0x17, r18	; 23
+	DDRC=0b0000000; //PORTC Input port connected to Sensors
+  3c:	14 ba       	out	0x14, r1	; 20
+			{
+				if((left_sensor==0b0001000)&&(right_sensor==0b0000000))
+				{	PORTB=0b00001010; }						// turn left
+				else
+				{
+					PORTB=0b00001100;  // move backward
+  3e:	5c e0       	ldi	r21, 0x0C	; 12
+		{
+			PORTB=0b00010010; // move forward
+		}
+		else
+		{	if((left_sensor==0b0000000)&&(right_sensor==0b0000001))
+			{	PORTB=0b00010100; }// turn right
+  40:	64 e1       	ldi	r22, 0x14	; 20
+			else
+			{
+				if((left_sensor==0b0001000)&&(right_sensor==0b0000000))
+				{	PORTB=0b00001010; }						// turn left
+  42:	7a e0       	ldi	r23, 0x0A	; 10
+		left_sensor=PINC&0b0001000; // mask PC3 bit of Port C
+		right_sensor=PINC&0b0000001;// mask PC0 bit of Port C
+		
+		if((left_sensor==0b0001000)&&(right_sensor==0b0000001))
+		{
+			PORTB=0b00010010; // move forward
+  44:	e2 e1       	ldi	r30, 0x12	; 18
+	DDRC=0b0000000; //PORTC Input port connected to Sensors
+
+	int left_sensor=0, right_sensor=0;
+	while(1) // infinite loop
+	{
+		left_sensor=PINC&0b0001000; // mask PC3 bit of Port C
+  46:	23 b3       	in	r18, 0x13	; 19
+  48:	28 70       	andi	r18, 0x08	; 8
+  4a:	30 e0       	ldi	r19, 0x00	; 0
+		right_sensor=PINC&0b0000001;// mask PC0 bit of Port C
+  4c:	43 b3       	in	r20, 0x13	; 19
+  4e:	84 2f       	mov	r24, r20
+  50:	81 70       	andi	r24, 0x01	; 1
+  52:	90 e0       	ldi	r25, 0x00	; 0
+		
+		if((left_sensor==0b0001000)&&(right_sensor==0b0000001))
+  54:	28 30       	cpi	r18, 0x08	; 8
+  56:	31 05       	cpc	r19, r1
+  58:	29 f4       	brne	.+10     	; 0x64 <__SREG__+0x25>
+  5a:	81 30       	cpi	r24, 0x01	; 1
+  5c:	91 05       	cpc	r25, r1
+  5e:	41 f4       	brne	.+16     	; 0x70 <__SREG__+0x31>
+		{
+			PORTB=0b00010010; // move forward
+  60:	e8 bb       	out	0x18, r30	; 24
+  62:	f1 cf       	rjmp	.-30     	; 0x46 <__SREG__+0x7>
+		}
+		else
+		{	if((left_sensor==0b0000000)&&(right_sensor==0b0000001))
+  64:	23 2b       	or	r18, r19
+  66:	41 f4       	brne	.+16     	; 0x78 <__SREG__+0x39>
+  68:	01 97       	sbiw	r24, 0x01	; 1
+  6a:	31 f4       	brne	.+12     	; 0x78 <__SREG__+0x39>
+			{	PORTB=0b00010100; }// turn right
+  6c:	68 bb       	out	0x18, r22	; 24
+  6e:	eb cf       	rjmp	.-42     	; 0x46 <__SREG__+0x7>
+			else
+			{
+				if((left_sensor==0b0001000)&&(right_sensor==0b0000000))
+  70:	89 2b       	or	r24, r25
+  72:	11 f4       	brne	.+4      	; 0x78 <__SREG__+0x39>
+				{	PORTB=0b00001010; }						// turn left
+  74:	78 bb       	out	0x18, r23	; 24
+  76:	e7 cf       	rjmp	.-50     	; 0x46 <__SREG__+0x7>
+				else
+				{
+					PORTB=0b00001100;  // move backward
+  78:	58 bb       	out	0x18, r21	; 24
+  7a:	e5 cf       	rjmp	.-54     	; 0x46 <__SREG__+0x7>
+
+0000007c <_exit>:
+  7c:	f8 94       	cli
+
+0000007e <__stop_program>:
+  7e:	ff cf       	rjmp	.-2      	; 0x7e <__stop_program>
